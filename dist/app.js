@@ -27,20 +27,40 @@ const enquiry = p => whatsapp(`Hello Shankar Steel & Wooden Furniture! I am inte
 let selected = 'All furniture';
 const productContainer = document.querySelector('#products');
 function filterCategory(category){
+ if(category !== 'All furniture' && !categories.includes(category)) return;
  selected=category;
  document.querySelectorAll('.filter').forEach(b=>{const isSelected=b.dataset.category===category;b.classList.toggle('selected',isSelected);b.setAttribute('aria-pressed',String(isSelected));});
  const visible=products.filter(p=>category==='All furniture'||p.category===category);
  document.querySelector('#count').textContent=`${visible.length} ${visible.length===1?'piece':'pieces'} to discover`;
  document.querySelector('#empty').hidden=visible.length>0;
- productContainer.innerHTML=visible.map(p=>`<article class="product"><button class="product-photo product-detail-trigger" data-product="${p.id}" aria-label="View ${p.name} details"><img src="assets/${p.image}" alt="Illustrative ${p.category.toLowerCase()} design for ${p.name}" loading="lazy"><span class="badge">${p.badge}</span></button><div class="product-category">${p.category}</div><h3>${p.name}</h3><p class="material">${p.material}</p><div class="price">${currency(p.price)}<small>Illustrative price</small></div><div class="product-actions"><button data-product="${p.id}">View details</button><a class="enquire" href="${enquiry(p)}" target="_blank" rel="noopener noreferrer">${chatIcon} Enquire on WhatsApp</a></div></article>`).join('');
+ productContainer.innerHTML=visible.map(p=>`<article class="product"><button class="product-photo product-detail-trigger" data-product="${p.id}" aria-label="View ${p.name} details"><img src="assets/${p.image}" alt="Illustrative ${p.category.toLowerCase()} design for ${p.name}" loading="lazy"><span class="badge">${p.badge}</span><span class="photo-details" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></span></button><div class="product-content"><div class="product-category"><span>${p.category}</span><span>${p.id}</span></div><h3>${p.name}</h3><p class="material">${p.material}</p><div class="product-meta"><div class="price">${currency(p.price)}<small>Illustrative price</small></div></div><div class="product-actions"><button data-product="${p.id}" aria-label="View details for ${p.name}">View details</button><a class="enquire" href="${enquiry(p)}" target="_blank" rel="noopener noreferrer" aria-label="Enquire about ${p.name} on WhatsApp">${chatIcon} Enquire on WhatsApp</a></div></div></article>`).join('');
 }
 document.querySelector('#filters').innerHTML=['All furniture',...categories].map(c=>`<button class="filter" data-category="${c}" aria-pressed="false">${c}</button>`).join('');
-document.querySelector('#categoryLinks').innerHTML=categories.map(c=>`<a class="category-link" href="#collection" data-category="${c}">${icon(c)}<span>${c==='Steel'?'Steel furniture':c}</span><small>Explore collection</small></a>`).join('');
+document.querySelector('#categoryLinks').innerHTML=categories.map((c,i)=>{const pieces=products.filter(p=>p.category===c);return `<a class="category-link" href="#collection" data-category="${c}" aria-label="Explore ${c==='Steel'?'steel furniture':c.toLowerCase()}"><div class="category-image"><img src="assets/${pieces[0].image}" alt="${c==='Steel'?'Steel furniture':c} collection preview" loading="lazy"><span class="category-number">0${i+1}</span></div><div class="category-info"><strong>${c}</strong><small>${pieces.length} ${pieces.length===1?'piece':'pieces'}</small></div></a>`;}).join('');
 document.querySelectorAll('[data-category]').forEach(b=>b.addEventListener('click',()=>filterCategory(b.dataset.category)));
 filterCategory(selected);
+
+
 const dialog=document.querySelector('#details');
-productContainer.addEventListener('click',e=>{const button=e.target.closest('[data-product]');if(!button)return;const p=products.find(p=>p.id===button.dataset.product);document.querySelector('#detailContent').innerHTML=`<div class="detail-layout"><img src="assets/${p.image}" alt="Illustrative ${p.name}"><div><span class="eyebrow">${p.category} · ${p.id}</span><h2 id="dialogTitle">${p.name}</h2><div class="price">${currency(p.price)} <small>Illustrative price</small></div><p style="margin-top:16px">${p.description}</p><dl><div><dt>Example materials</dt><dd>${p.material}</dd></div><div><dt>Example dimensions</dt><dd>${p.size}</dd></div><div><dt>Example finish</dt><dd>${p.finish}</dd></div></dl><small>This is a sample listing with illustrative photography. Confirm actual specifications, availability, taxes, delivery charges, assembly and warranty with us before ordering.</small><a class="button dark" href="${enquiry(p)}" target="_blank" rel="noopener noreferrer">Enquire on WhatsApp</a></div></div>`;dialog.setAttribute('aria-labelledby','dialogTitle');dialog.showModal();});
+productContainer.addEventListener('click',e=>{const button=e.target.closest('[data-product]');if(!button)return;const p=products.find(p=>p.id===button.dataset.product);if(!p)return;document.querySelector('#detailContent').innerHTML=`<div class="detail-layout"><div class="detail-photo"><img src="assets/${p.image}" alt="Illustrative ${p.name}"><span>Illustrative photography</span></div><div class="detail-copy"><span class="eyebrow">${p.category} / ${p.id}</span><h2 id="dialogTitle">${p.name}</h2><div class="price">${currency(p.price)}<small>Illustrative price</small></div><p id="dialogDescription">${p.description}</p><dl class="specifications"><div><dt>Materials</dt><dd>${p.material}</dd></div><div><dt>Dimensions</dt><dd>${p.size}</dd></div><div><dt>Finish</dt><dd>${p.finish}</dd></div></dl><small>Sample specifications. Ask us to confirm actual photos, sizes, final price, availability, delivery, assembly and warranty before ordering.</small><a class="button dark" href="${enquiry(p)}" target="_blank" rel="noopener noreferrer">${chatIcon} Enquire on WhatsApp</a></div></div>`;dialog.setAttribute('aria-labelledby','dialogTitle');dialog.setAttribute('aria-describedby','dialogDescription');dialog.showModal();dialog.scrollTop=0;document.body.classList.add('modal-open');});
 document.querySelector('.close').addEventListener('click',()=>dialog.close());
+dialog.addEventListener('close',()=>document.body.classList.remove('modal-open'));
 dialog.addEventListener('click',e=>{if(e.target===dialog){const rect=dialog.getBoundingClientRect();if(e.clientX<rect.left||e.clientX>rect.right||e.clientY<rect.top||e.clientY>rect.bottom)dialog.close();}});
 document.querySelectorAll('.wa').forEach(a=>{a.href=whatsapp(genericMessage);a.target='_blank';a.rel='noopener noreferrer';});
 document.querySelector('#year').textContent=new Date().getFullYear();
+
+const menuToggle=document.querySelector('.menu-toggle');
+const mobileMenu=document.querySelector('#mobileMenu');
+function closeMenu(){mobileMenu.hidden=true;menuToggle.setAttribute('aria-expanded','false');menuToggle.setAttribute('aria-label','Open navigation');}
+menuToggle.addEventListener('click',()=>{const open=menuToggle.getAttribute('aria-expanded')!=='true';mobileMenu.hidden=!open;menuToggle.setAttribute('aria-expanded',String(open));menuToggle.setAttribute('aria-label',open?'Close navigation':'Open navigation');});
+mobileMenu.querySelectorAll('a').forEach(link=>link.addEventListener('click',closeMenu));
+document.addEventListener('click',event=>{if(!mobileMenu.hidden&&!event.target.closest('.site-header'))closeMenu();});
+document.addEventListener('keydown',event=>{if(event.key==='Escape'&&!mobileMenu.hidden){closeMenu();menuToggle.focus();}});
+const desktopSize=window.matchMedia('(min-width:851px)');
+desktopSize.addEventListener('change',event=>{if(event.matches)closeMenu();});
+const header=document.querySelector('.site-header');
+window.addEventListener('scroll',()=>header.classList.toggle('scrolled',window.scrollY>30),{passive:true});
+if('IntersectionObserver' in window){
+ const navigationObserver=new IntersectionObserver(entries=>{const section=entries.filter(entry=>entry.isIntersecting).sort((a,b)=>b.intersectionRatio-a.intersectionRatio)[0];if(!section)return;document.querySelectorAll('[data-nav]').forEach(link=>{const active=link.dataset.nav===section.target.id;link.classList.toggle('active',active);if(active)link.setAttribute('aria-current','location');else link.removeAttribute('aria-current');});},{rootMargin:'-100px 0px -55% 0px',threshold:0});
+ document.querySelectorAll('#home, #categories, #collection, #our-story').forEach(section=>navigationObserver.observe(section));
+}
