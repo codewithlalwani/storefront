@@ -12,6 +12,97 @@ const icons = {
 };
 const categories = Object.keys(icons);
 const products = [
+ {
+  "id": "SFW-009",
+  "name": "The Curve Sofa",
+  "category": "Sofas",
+  "price": null,
+  "material": "Soft upholstery · Sculptural silhouette",
+  "size": "Ask us for available sizes",
+  "finish": "Blush neutral",
+  "image": "trend-8987432.jpg",
+  "badge": "SOFT CURVES",
+  "description": "A softly curved sofa silhouette inspired by the move toward organic shapes and relaxed seating. Share this reference with us to explore similar designs.",
+  "position": "center 80%",
+  "source": "https://www.pexels.com/photo/8987432/",
+  "credit": "Ksenia Chernaya"
+ },
+ {
+  "id": "SFW-010",
+  "name": "The Timber Slat Bed",
+  "category": "Beds",
+  "price": null,
+  "material": "Wooden frame · Slatted headboard",
+  "size": "Ask us for available sizes",
+  "finish": "Warm natural wood",
+  "image": "trend-12119235.jpg",
+  "badge": "NATURAL WOOD",
+  "description": "Warm wood grain and a slatted headboard bring natural character to the bedroom. Ask us about similar wooden beds, mattress sizes and storage options.",
+  "position": "center",
+  "source": "https://www.pexels.com/photo/12119235/",
+  "credit": "Curtis Adams"
+ },
+ {
+  "id": "SFW-011",
+  "name": "The Round Dining Set",
+  "category": "Dining",
+  "price": null,
+  "material": "Round glass tabletop · Upholstered seating",
+  "size": "Ask us for available sizes",
+  "finish": "White & natural wood tones",
+  "image": "trend-6297088.jpg",
+  "badge": "ROUND & SOCIAL",
+  "description": "A round dining arrangement with softly shaped chairs offers an inviting setting for shared meals. Enquire about comparable sets and sizes for your room.",
+  "position": "center 65%",
+  "source": "https://www.pexels.com/photo/6297088/",
+  "credit": "Max Vakhtbovych"
+ },
+ {
+  "id": "SFW-012",
+  "name": "The Cocoon Accent Chair",
+  "category": "Chairs",
+  "price": null,
+  "material": "Upholstered armchair · Tapered legs",
+  "size": "Ask us for available sizes",
+  "finish": "Warm cream",
+  "image": "trend-37889619.jpg",
+  "badge": "SCULPTURAL SEATING",
+  "description": "A rounded, enveloping armchair in a warm neutral finish. Use this photograph as a starting point for a comfortable reading corner or living room accent.",
+  "position": "center 65%",
+  "source": "https://www.pexels.com/photo/37889619/",
+  "credit": "Evolunshy"
+ },
+ {
+  "id": "SFW-013",
+  "name": "The Grain Sideboard",
+  "category": "Storage",
+  "price": null,
+  "material": "Wooden sideboard · Doors & drawers",
+  "size": "Ask us for available sizes",
+  "finish": "Natural wood grain",
+  "image": "trend-34984437.jpg",
+  "badge": "WOOD WITH CHARACTER",
+  "description": "Visible grain, generous proportions and practical closed storage create a warm focal point. Ask us about similar sideboards, finishes and storage layouts.",
+  "position": "center 65%",
+  "source": "https://www.pexels.com/photo/34984437/",
+  "credit": "Pexels contributor"
+ },
+ {
+  "id": "SFW-014",
+  "name": "The Arc Metal Chair",
+  "category": "Steel",
+  "price": null,
+  "material": "Metal frame · Upholstered seat",
+  "size": "Ask us for available sizes",
+  "finish": "Black metal & cream",
+  "image": "trend-25857376.jpg",
+  "badge": "WOOD & STEEL EDIT",
+  "description": "A sculptural metal frame paired with a softly shaped seat brings a lighter look to steel furniture. Enquire about comparable steel seating and upholstery options.",
+  "position": "center 60%",
+  "source": "https://www.pexels.com/photo/25857376/",
+  "credit": "Pușcaș Adryan"
+ }
+,
  {id:'SFW-001',name:'The Haven Sofa',category:'Sofas',price:32900,material:'Upholstered fabric · Wooden frame',size:'213 × 86 × 84 cm',finish:'Warm ivory',image:'sofa.jpg',badge:'EVERYDAY COMFORT',description:'An inviting three-seater with a relaxed silhouette for quiet evenings and good company.'},
  {id:'SFW-002',name:'The Gather Dining Set',category:'Dining',price:38900,material:'Wood · 4-seater dining set',size:'120 × 80 × 75 cm (table)',finish:'Natural wood',image:'dining.jpg',badge:'GATHER AROUND',description:'A warm wooden table with four chairs, bringing everyone together for everyday meals.'},
  {id:'SFW-003',name:'The Retreat Bed',category:'Beds',price:28900,material:'Wooden frame · Queen size',size:'Fits a 152 × 198 cm mattress',finish:'Natural wood',image:'bed.jpg',badge:'REST BEAUTIFULLY',description:'A simple, grounded wooden bed design to create a calm and comfortable bedroom. Mattress not included.'},
@@ -23,7 +114,9 @@ const products = [
 ];
 const icon = category => `<svg viewBox="0 0 32 32" aria-hidden="true">${icons[category]}</svg>`;
 const chatIcon = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 11a9 9 0 0 1-13 8L3 21l2-5A9 9 0 1 1 21 11Z"/></svg>';
-const enquiry = p => whatsapp(`Hello Shankar Steel & Wooden Furniture! I am interested in ${p.name} (${p.id}), listed at an illustrative price of ${currency(p.price)}. Please share actual product photos, final price, available materials and finishes, dimensions, warranty, and delivery details.`);
+const priceLabel = p => p.price == null ? 'Price on enquiry' : currency(p.price);
+const priceNote = p => p.price == null ? 'Design inspiration' : 'Illustrative price';
+const enquiry = p => whatsapp(`Hello Shankar Steel & Wooden Furniture! I am interested in ${p.name} (${p.id}), ${p.price == null ? "shown as design inspiration" : "listed at an illustrative price of " + currency(p.price)}. Please share actual product photos, final price, available materials and finishes, dimensions, warranty, and delivery details.`);
 let selected = 'All furniture';
 const productContainer = document.querySelector('#products');
 function filterCategory(category){
@@ -33,7 +126,7 @@ function filterCategory(category){
  const visible=products.filter(p=>category==='All furniture'||p.category===category);
  document.querySelector('#count').textContent=`${visible.length} ${visible.length===1?'piece':'pieces'} to discover`;
  document.querySelector('#empty').hidden=visible.length>0;
- productContainer.innerHTML=visible.map(p=>`<article class="product"><button class="product-photo product-detail-trigger" data-product="${p.id}" aria-label="View ${p.name} details"><img src="assets/${p.image}" alt="Illustrative ${p.category.toLowerCase()} design for ${p.name}" loading="lazy"><span class="badge">${p.badge}</span><span class="photo-details" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></span></button><div class="product-content"><div class="product-category"><span>${p.category}</span><span>${p.id}</span></div><h3>${p.name}</h3><p class="material">${p.material}</p><div class="product-meta"><div class="price">${currency(p.price)}<small>Illustrative price</small></div></div><div class="product-actions"><button data-product="${p.id}" aria-label="View details for ${p.name}">View details</button><a class="enquire" href="${enquiry(p)}" target="_blank" rel="noopener noreferrer" aria-label="Enquire about ${p.name} on WhatsApp">${chatIcon} Enquire on WhatsApp</a></div></div></article>`).join('');
+ productContainer.innerHTML=visible.map(p=>`<article class="product"><button class="product-photo product-detail-trigger" data-product="${p.id}" aria-label="View ${p.name} details"><img src="assets/${p.image}" style="object-position:${p.position || 'center'}" alt="Illustrative ${p.category.toLowerCase()} design for ${p.name}" loading="lazy"><span class="badge">${p.badge}</span><span class="photo-details" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></span></button><div class="product-content"><div class="product-category"><span>${p.category}</span><span>${p.id}</span></div><h3>${p.name}</h3><p class="material">${p.material}</p><div class="product-meta"><div class="price">${priceLabel(p)}<small>${priceNote(p)}</small></div></div><div class="product-actions"><button data-product="${p.id}" aria-label="View details for ${p.name}">View details</button><a class="enquire" href="${enquiry(p)}" target="_blank" rel="noopener noreferrer" aria-label="Enquire about ${p.name} on WhatsApp">${chatIcon} Enquire on WhatsApp</a></div></div></article>`).join('');
 }
 document.querySelector('#filters').innerHTML=['All furniture',...categories].map(c=>`<button class="filter" data-category="${c}" aria-pressed="false">${c}</button>`).join('');
 document.querySelector('#categoryLinks').innerHTML=categories.map((c,i)=>{const pieces=products.filter(p=>p.category===c);return `<a class="category-link" href="#collection" data-category="${c}" aria-label="Explore ${c==='Steel'?'steel furniture':c.toLowerCase()}"><div class="category-image"><img src="assets/${pieces[0].image}" alt="${c==='Steel'?'Steel furniture':c} collection preview" loading="lazy"><span class="category-number">0${i+1}</span></div><div class="category-info"><strong>${c}</strong><small>${pieces.length} ${pieces.length===1?'piece':'pieces'}</small></div></a>`;}).join('');
@@ -42,7 +135,7 @@ filterCategory(selected);
 
 
 const dialog=document.querySelector('#details');
-productContainer.addEventListener('click',e=>{const button=e.target.closest('[data-product]');if(!button)return;const p=products.find(p=>p.id===button.dataset.product);if(!p)return;document.querySelector('#detailContent').innerHTML=`<div class="detail-layout"><div class="detail-photo"><img src="assets/${p.image}" alt="Illustrative ${p.name}"><span>Illustrative photography</span></div><div class="detail-copy"><span class="eyebrow">${p.category} / ${p.id}</span><h2 id="dialogTitle">${p.name}</h2><div class="price">${currency(p.price)}<small>Illustrative price</small></div><p id="dialogDescription">${p.description}</p><dl class="specifications"><div><dt>Materials</dt><dd>${p.material}</dd></div><div><dt>Dimensions</dt><dd>${p.size}</dd></div><div><dt>Finish</dt><dd>${p.finish}</dd></div></dl><small>Sample specifications. Ask us to confirm actual photos, sizes, final price, availability, delivery, assembly and warranty before ordering.</small><a class="button dark" href="${enquiry(p)}" target="_blank" rel="noopener noreferrer">${chatIcon} Enquire on WhatsApp</a></div></div>`;dialog.setAttribute('aria-labelledby','dialogTitle');dialog.setAttribute('aria-describedby','dialogDescription');dialog.showModal();dialog.scrollTop=0;document.body.classList.add('modal-open');});
+productContainer.addEventListener('click',e=>{const button=e.target.closest('[data-product]');if(!button)return;const p=products.find(p=>p.id===button.dataset.product);if(!p)return;document.querySelector('#detailContent').innerHTML=`<div class="detail-layout"><div class="detail-photo"><img src="assets/${p.image}" style="object-position:${p.position || 'center'}" alt="Illustrative ${p.name}"><span>Illustrative photography</span></div><div class="detail-copy"><span class="eyebrow">${p.category} / ${p.id}</span><h2 id="dialogTitle">${p.name}</h2><div class="price">${priceLabel(p)}<small>${priceNote(p)}</small></div><p id="dialogDescription">${p.description}</p><dl class="specifications"><div><dt>Materials</dt><dd>${p.material}</dd></div><div><dt>Dimensions</dt><dd>${p.size}</dd></div><div><dt>Finish</dt><dd>${p.finish}</dd></div></dl>${p.source ? `<p class="photo-credit">Photo reference: <a href="${p.source}" target="_blank" rel="noopener noreferrer">${p.credit} / Pexels</a></p>` : ''}<small>Sample specifications. Ask us to confirm actual photos, sizes, final price, availability, delivery, assembly and warranty before ordering.</small><a class="button dark" href="${enquiry(p)}" target="_blank" rel="noopener noreferrer">${chatIcon} Enquire on WhatsApp</a></div></div>`;dialog.setAttribute('aria-labelledby','dialogTitle');dialog.setAttribute('aria-describedby','dialogDescription');dialog.showModal();dialog.scrollTop=0;document.body.classList.add('modal-open');});
 document.querySelector('.close').addEventListener('click',()=>dialog.close());
 dialog.addEventListener('close',()=>document.body.classList.remove('modal-open'));
 dialog.addEventListener('click',e=>{if(e.target===dialog){const rect=dialog.getBoundingClientRect();if(e.clientX<rect.left||e.clientX>rect.right||e.clientY<rect.top||e.clientY>rect.bottom)dialog.close();}});

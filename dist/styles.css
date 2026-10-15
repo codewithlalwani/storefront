@@ -141,6 +141,10 @@ h2 em { color:#666d56; }
 .contact h2 em { color:#d7bf98; }
 .contact p { font-size:1rem; line-height:1.8; color:#cdcec2; margin-bottom:29px; }
 .contact-number { display:block; width:max-content; max-width:100%; margin:23px auto 0; color:#f3efe3; font-size:.875rem; letter-spacing:.06em; padding:5px; }
+.contact-address { display:block; width:max-content; max-width:100%; margin:12px auto 0; color:#f3efe3; font-size:.875rem; line-height:1.7; padding:5px; }
+.contact-address span { display:block; color:#d7bf98; font-size:.75rem; letter-spacing:.04em; }
+.contact-address address { font-style:normal; }
+.contact-address:hover { text-decoration:underline; text-underline-offset:3px; }
 .contact small { display:block; color:#c1c5b5; margin-top:7px; font-size:.75rem; }
 footer { padding:50px 6% 25px; }
 .footer-top { display:flex; align-items:center; justify-content:space-between; gap:25px; }
@@ -408,3 +412,13 @@ h1 { font-size:clamp(3.1rem,5.1vw,5.7rem); }
   html { scroll-behavior:auto; }
   *,*::before,*::after { transition:none!important; animation:none!important; }
 }
+
+/* Current furniture inspiration and location details. */
+.trend-intro { display:grid; grid-template-columns:2fr 1fr; gap:32px; padding:28px 30px; margin-bottom:32px; background:#ebe7dc; border:1px solid var(--line); }
+.trend-intro h3 { margin:10px 0; font-size:2rem; font-weight:500; }
+.trend-intro p { font-size:.875rem; line-height:1.8; color:var(--muted); margin-bottom:0; }
+.trend-intro .trend-sources { font-size:.75rem; align-self:center; }
+.trend-sources a,.photo-credit a { text-decoration:underline; text-underline-offset:3px; }
+.detail-copy .photo-credit { font-size:.75rem; }
+.contact-address + .contact-address { margin-top:18px; }
+@media(max-width:700px) { .trend-intro { grid-template-columns:1fr; gap:12px; padding:23px; } .trend-intro h3 { font-size:1.75rem; } }
