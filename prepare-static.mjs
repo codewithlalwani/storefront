@@ -1,6 +1,6 @@
 import { mkdirSync, copyFileSync, readdirSync } from 'node:fs';
 import path from 'node:path';
-const output = 'site-output';
+const output = 'out';
 mkdirSync(path.join(output, 'assets'), { recursive: true });
 for (const name of ['index.html', 'styles.css', 'app.js']) {
   copyFileSync(path.join('dist', name), path.join(output, name));
